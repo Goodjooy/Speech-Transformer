@@ -1,1 +1,4 @@
 librosa
+uvicorn
+pydantic
+fastapi

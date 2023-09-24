@@ -5,3 +5,8 @@ checkpoint.tar
 data/
 runs/
 nohup.out
+
+*.wav
+*.tar
+
+tmp/

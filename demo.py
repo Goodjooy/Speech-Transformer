@@ -35,10 +35,11 @@ if __name__ == '__main__':
         data = pickle.load(file)
     samples = data['test']
 
-    filename = 'speech-transformer-cn.pt'
+    filename = './BEST_checkpoint.tar'
     print('loading model: {}...'.format(filename))
-    model = Transformer()
-    model.load_state_dict(torch.load(filename))
+    cp = torch.load(filename)
+    model = cp["model"]
+    # model.load_state_dict(torch.load(filename))
     model = model.to(device)
     model.eval()
 
@@ -50,7 +51,7 @@ if __name__ == '__main__':
         wave = sample['wave']
         trn = sample['trn']
 
-        copyfile(wave, 'audios/audio_{}.wav'.format(i))
+        # copyfile(wave, 'audios/audio_{}_{}.wav'.format(i,gt))
 
         feature = extract_feature(input_file=wave, feature='fbank', dim=input_dim, cmvn=True)
         feature = build_LFR_features(feature, m=LFR_m, n=LFR_n)
@@ -70,6 +71,7 @@ if __name__ == '__main__':
         gt = [char_list[idx] for idx in trn]
         gt = ''.join(gt)
         print('GT: {}\n'.format(gt))
+        copyfile(wave, 'audios/audio_{}.wav'.format(i))
 
         results.append({'out_list_{}'.format(i): out_list, 'gt_{}'.format(i): gt})
 
